@@ -142,27 +142,17 @@ export class Server {
             const dataString = data.toString();
             if (dataString.startsWith('Playback Status: ')) {
                 this._musicInfo.playing = dataString.substring(17) === 'playing' ? true : false;
-            } else if (dataString.startsWith('Music Info:')) {
-                if (dataString.includes('Title: ')) {
-                    this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('\n', dataString.indexOf('Title: ') + 7));
-                }
-                if (dataString.includes('Artist: ')) {
-                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist: ') + 8, dataString.indexOf('\n', dataString.indexOf('Artist: ') + 8));
-                }
-                if (dataString.includes('Album: ')) {
-                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6, dataString.indexOf('\n', dataString.indexOf('Album: ') + 6));
-                }
-            } else {
-                if (dataString.includes('Title: ')) {
-                    this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('\n', dataString.indexOf('Title: ') + 7));
-                }
-                if (dataString.includes('Artist: ')) {
-                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist: ') + 8, dataString.indexOf('\n', dataString.indexOf('Artist: ') + 8));
-                }
-                if (dataString.includes('Album: ')) {
-                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6, dataString.indexOf('\n', dataString.indexOf('Album: ') + 6));
-                }
             }
+            if (dataString.includes('Title: ')) {
+                this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('\n', dataString.indexOf('Title: ') + 7));
+            }
+            if (dataString.includes('Artist: ')) {
+                this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist: ') + 8, dataString.indexOf('\n', dataString.indexOf('Artist: ') + 8));
+            }
+            if (dataString.includes('Album: ')) {
+                this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6, dataString.indexOf('\n', dataString.indexOf('Album: ') + 6));
+            }
+
             console.log(this._musicInfo);
         });
 
