@@ -168,7 +168,7 @@ export class Server {
 
         musicChild.stderr.on('data', (data) => {
             console.log(`stderr: ${data}`);
-            if (data.toString().startsWith('Error: Media Player not found.')) {
+            if (data.toString().includes('Media Player not found.')) {
                 failed = true;
             }
         });
