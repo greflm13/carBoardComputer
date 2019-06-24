@@ -126,7 +126,7 @@ export class Server {
 
     public start(port: number): Promise<Server> {
 
-    const musicChild = child.spawn('python ', ['-u', path.join(__dirname, '../media_control.py')]);
+    const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
     musicChild.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
         this._musicInfo = data;
