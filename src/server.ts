@@ -130,12 +130,13 @@ export class Server {
     const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
     musicChild.stdout.on('data', (data) => {
         // console.log(`stdout: ${data}`);
-        console.log(data.toString());
-        if(data.toString().startsWith('Playback Status: ')) {
-            this._playStatus = data.toString().substring(17);
+        const dataString = data.toString();
+        console.log(dataString);
+        if(dataString.startsWith('Playback Status: ')) {
+            this._playStatus = dataString.substring(17);
             console.log(this._playStatus);
-        } else if (data.toString().startsWith('Music Info:')) {
-            this._musicInfo.title = data.toString().substring(data.toString().indexOf('Title: ') + 7, data.toString().indexOf('Artist: '));
+        } else if (dataString.startsWith('Music Info:')) {
+            this._musicInfo.title = dataString.substring(dataString.indexOf('Title: '), dataString.indexOf('Artist: '));
             console.log(this._musicInfo)
         } else {
 
