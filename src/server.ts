@@ -131,7 +131,7 @@ export class Server {
         musicChild.stdout.on('data', (data) => {
             // console.log(`stdout: ${data}`);
             const dataString = data.toString();
-            console.log(dataString);
+            console.log({ string: dataString });
             if (dataString.startsWith('Playback Status: ')) {
                 this._playStatus = dataString.substring(17);
                 console.log(this._playStatus);
