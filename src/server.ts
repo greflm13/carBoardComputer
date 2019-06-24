@@ -64,7 +64,7 @@ export class Server {
     // #endregion
 
     private _express = express();
-    private _musicInfo = {};
+    private _musicInfo = {title: '', artist: '', album: ''};
     private _playStatus = '';
 
     private constructor() {
@@ -132,10 +132,11 @@ export class Server {
         // console.log(`stdout: ${data}`);
         console.log(data.toString());
         if(data.toString().startsWith('Playback Status: ')) {
-            this._playStatus = data.toString().substring(16);
+            this._playStatus = data.toString().substring(17);
             console.log(this._playStatus);
         } else if (data.toString().startsWith('Music Info: ')) {
-
+            this._musicInfo.title = data.toString().substring(data.toString().indexOf('Title: ') + 7, data.toString().indexOf('Artist: '));
+            console.log(this._musicInfo)
         } else {
 
         }
