@@ -130,6 +130,7 @@ export class Server {
     musicChild.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
         this._musicInfo = data;
+        console.log(this._musicInfo);
       });
       
       musicChild.stderr.on('data', (data) => {
