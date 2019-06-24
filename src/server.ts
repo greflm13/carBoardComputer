@@ -125,16 +125,8 @@ export class Server {
         next();
     }
 
-    public start(port: number): Promise<Server> {
-        let failed = false;
-        let musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
-
-        setInterval(() => {
-            if (failed) {
-                musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
-                failed = false;
-            }
-        }, 1000)
+    private childProcess() {
+        const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
 
 
         musicChild.stdout.on('data', (data) => {
@@ -156,12 +148,19 @@ export class Server {
 
         musicChild.stderr.on('data', (data) => {
             console.log(data.toString());
+            if (data.toString().includes('Media Player not found.')) {
+                this.childProcess();
+            }
         });
 
         musicChild.on('close', (code) => {
             console.log(`child process exited with code ${code}`);
-            failed = true;
         });
+
+    }
+
+    public start(port: number): Promise<Server> {
+        this.childProcess();
 
         return new Promise<Server>((resolve, reject) => {
             log.info('Starting Server...');
