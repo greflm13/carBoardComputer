@@ -136,7 +136,7 @@ export class Server {
             this._playStatus = dataString.substring(17);
             console.log(this._playStatus);
         } else if (dataString.startsWith('Music Info:')) {
-            this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ')+7, dataString.indexOf('Artist: ')-1);
+            this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ')+7, dataString.indexOf('Artist: '));
             console.log(this._musicInfo)
         } else {
 
