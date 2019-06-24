@@ -140,7 +140,6 @@ export class Server {
         musicChild.stdout.on('data', (data) => {
             // console.log(`stdout: ${data}`);
             const dataString = data.toString();
-            console.log(dataString.substring(17).toString());
             if (dataString.startsWith('Playback Status: ')) {
                 this._musicInfo.playing = dataString.substring(17) === 'playing\n' ? true : false;
             }
@@ -153,7 +152,6 @@ export class Server {
             if (dataString.includes('Album: ')) {
                 this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6, dataString.indexOf('\n', dataString.indexOf('Album: ') + 6));
             }
-            console.log(this._musicInfo);
         });
 
         musicChild.stderr.on('data', (data) => {
