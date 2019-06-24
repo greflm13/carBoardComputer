@@ -131,8 +131,8 @@ export class Server {
 
         setInterval(() => {
             if (failed) {
-                failed = false;
                 musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
+                failed = false;
             }
         }, 1000)
 
@@ -168,13 +168,11 @@ export class Server {
 
         musicChild.stderr.on('data', (data) => {
             console.log(data.toString());
-            if (data.toString().includes('Media Player not found.')) {
-                failed = true;
-            }
         });
 
         musicChild.on('close', (code) => {
             console.log(`child process exited with code ${code}`);
+            failed = true;
         });
 
         return new Promise<Server>((resolve, reject) => {
