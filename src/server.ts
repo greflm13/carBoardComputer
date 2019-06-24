@@ -64,8 +64,8 @@ export class Server {
     // #endregion
 
     private _express = express();
-    private _musicInfo = { title: '', artist: '', album: '' };
-    private _playStatus = '';
+    private _musicInfo = { title: '', artist: '', album: '', playing: false };
+    // private _playStatus = '';
 
     private constructor() {
         this._express.use(bodyparser.json({ limit: '1mb' }));
@@ -92,7 +92,7 @@ export class Server {
     }
 
     private getMusicInfo(req: express.Request, res: express.Response, next: express.NextFunction) {
-
+        res.send(this._musicInfo)
     }
 
     private error404Handler(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -132,7 +132,7 @@ export class Server {
             // console.log(`stdout: ${data}`);
             const dataString = data.toString();
             if (dataString.startsWith('Playback Status: ')) {
-                this._playStatus = dataString.substring(17);
+                this._musicInfo.playing = dataString.substring(17) === 'playing' ? true : false;
             } else if (dataString.startsWith('Music Info:')) {
                 if (dataString.includes('Title: ')) {
                     this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('\n', dataString.indexOf('Title: ') + 7));
@@ -154,6 +154,7 @@ export class Server {
                     this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6, dataString.indexOf('\n', dataString.indexOf('Album: ') + 6));
                 }
             }
+            console.log(this._musicInfo);
         });
 
         musicChild.stderr.on('data', (data) => {
