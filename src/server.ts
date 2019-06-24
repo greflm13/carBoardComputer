@@ -65,6 +65,7 @@ export class Server {
 
     private _express = express();
     private _musicInfo = {};
+    private _playStatus = '';
 
     private constructor() {
         this._express.use(bodyparser.json({ limit: '1mb' }));
@@ -130,6 +131,14 @@ export class Server {
     musicChild.stdout.on('data', (data) => {
         // console.log(`stdout: ${data}`);
         console.log(data.toString());
+        if(data.toString().startsWith('Playback Status: ')) {
+            this._playStatus = data.toString().substring(16);
+            console.log(this._playStatus);
+        } else if (data.toString().startsWith('Music Info: ')) {
+
+        } else {
+
+        }
       });
       
       musicChild.stderr.on('data', (data) => {
