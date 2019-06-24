@@ -129,7 +129,7 @@ export class Server {
     const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
     musicChild.stdout.on('data', (data) => {
         // console.log(`stdout: ${data}`);
-        console.log(data);
+        console.log(data.toString());
       });
       
       musicChild.stderr.on('data', (data) => {
