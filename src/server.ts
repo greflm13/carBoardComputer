@@ -126,8 +126,8 @@ export class Server {
     }
 
     public start(port: number): Promise<Server> {
-        let failed = true;
-        let musicChild: child.ChildProcess;
+        let failed = false;
+        let musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
 
         setInterval(() => {
             if (failed) {
