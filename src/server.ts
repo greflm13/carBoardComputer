@@ -64,7 +64,7 @@ export class Server {
     // #endregion
 
     private _express = express();
-    private _musicInfo = {title: '', artist: '', album: ''};
+    private _musicInfo = { title: '', artist: '', album: '' };
     private _playStatus = '';
 
     private constructor() {
@@ -127,29 +127,45 @@ export class Server {
 
     public start(port: number): Promise<Server> {
 
-    const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
-    musicChild.stdout.on('data', (data) => {
-        // console.log(`stdout: ${data}`);
-        const dataString = data.toString();
-        console.log(dataString);
-        if(dataString.startsWith('Playback Status: ')) {
-            this._playStatus = dataString.substring(17);
-            console.log(this._playStatus);
-        } else if (dataString.startsWith('Music Info:')) {
-            this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ')+7, dataString.indexOf('Artist: '));
+        const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
+        musicChild.stdout.on('data', (data) => {
+            // console.log(`stdout: ${data}`);
+            const dataString = data.toString();
+            console.log(dataString);
+            if (dataString.startsWith('Playback Status: ')) {
+                this._playStatus = dataString.substring(17);
+                console.log(this._playStatus);
+            } else if (dataString.startsWith('Music Info:')) {
+                if (dataString.includes('Title: ')) {
+                    this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('Artist: '));
+                }
+                if (dataString.includes('Artist: ')) {
+                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist ') + 7, dataString.indexOf('Album: '));
+                }
+                if (dataString.includes('Album: ')) {
+                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album ') + 6);
+                }
+            } else {
+                if (dataString.includes('Title: ')) {
+                    this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('Artist: '));
+                }
+                if (dataString.includes('Artist: ')) {
+                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist ') + 7, dataString.indexOf('Artist: '));
+                }
+                if (dataString.includes('Album: ')) {
+                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album ') + 6);
+                }
+            }
             console.log(this._musicInfo)
-        } else {
+        });
 
-        }
-      });
-      
-      musicChild.stderr.on('data', (data) => {
-        console.log(`stderr: ${data}`);
-      });
-      
-      musicChild.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-      });
+        musicChild.stderr.on('data', (data) => {
+            console.log(`stderr: ${data}`);
+        });
+
+        musicChild.on('close', (code) => {
+            console.log(`child process exited with code ${code}`);
+        });
 
         return new Promise<Server>((resolve, reject) => {
             log.info('Starting Server...');
