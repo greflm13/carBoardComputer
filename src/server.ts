@@ -140,6 +140,7 @@ export class Server {
         musicChild.stdout.on('data', (data) => {
             // console.log(`stdout: ${data}`);
             const dataString = data.toString();
+            console.log(dataString.substring(17));
             if (dataString.startsWith('Playback Status: ')) {
                 this._musicInfo.playing = dataString.substring(17) === 'playing' ? true : false;
             }
