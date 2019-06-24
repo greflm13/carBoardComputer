@@ -126,8 +126,17 @@ export class Server {
     }
 
     public start(port: number): Promise<Server> {
+        let failed = true;
+        let musicChild: child.ChildProcess;
 
-        const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
+        setInterval(() => {
+            if (failed) {
+                failed = false;
+                musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
+            }
+        }, 1000)
+
+
         musicChild.stdout.on('data', (data) => {
             // console.log(`stdout: ${data}`);
             const dataString = data.toString();
@@ -159,6 +168,9 @@ export class Server {
 
         musicChild.stderr.on('data', (data) => {
             console.log(`stderr: ${data}`);
+            if (data.toString().startsWith('Error: Media Player not found.')) {
+                failed = true;
+            }
         });
 
         musicChild.on('close', (code) => {
