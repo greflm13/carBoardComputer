@@ -140,21 +140,22 @@ export class Server {
                     this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('Artist: '));
                 }
                 if (dataString.includes('Artist: ')) {
-                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist ') + 7, dataString.indexOf('Album: '));
+                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist: ') + 7, dataString.indexOf('Album: '));
                 }
                 if (dataString.includes('Album: ')) {
-                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album ') + 6);
+                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6);
                 }
             } else {
                 if (dataString.includes('Title: ')) {
                     this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('Artist: '));
                 }
                 if (dataString.includes('Artist: ')) {
-                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist ') + 7, dataString.indexOf('Artist: '));
+                    this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist: ') + 7, dataString.indexOf('Artist: '));
                 }
                 if (dataString.includes('Album: ')) {
-                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album ') + 6);
+                    this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6);
                 }
+
             }
             console.log(this._musicInfo)
         });
