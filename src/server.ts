@@ -65,6 +65,7 @@ export class Server {
 
     private _express = express();
     private _musicInfo = { title: '', artist: '', album: '', playing: false };
+    private _musicChild: child.ChildProcess;
     // private _playStatus = '';
 
     private constructor() {
@@ -86,7 +87,11 @@ export class Server {
         this._express.get('*.php', (req, res, next) => {
             res.sendFile(path.join(__dirname, '/views/no.html'));
         });
-        this._express.get('/api/info', (req, res, next) => this.getMusicInfo(req, res, next))
+        this._express.get('/api/info', (req, res, next) => this.getMusicInfo(req, res, next));
+        this._express.post('/api/next', (req, res, next) => this.next(req, res, next));
+        this._express.post('/api/prev', (req, res, next) => this.prev(req, res, next));
+        this._express.post('/api/play', (req, res, next) => this.play(req, res, next));
+        this._express.post('/api/pause', (req, res, next) => this.pause(req, res, next));
         this._express.use(express.static(path.join(__dirname, './public')));
         this._express.use(this.error404Handler);
         this._express.use(this.errorHandler);
@@ -94,6 +99,22 @@ export class Server {
 
     private getMusicInfo(req: express.Request, res: express.Response, next: express.NextFunction) {
         res.send(this._musicInfo)
+    }
+
+    private next(req: express.Request, res: express.Response, next: express.NextFunction) {
+        this._musicChild.stdin.write('next');
+    }
+
+    private prev(req: express.Request, res: express.Response, next: express.NextFunction) {
+        this._musicChild.stdin.write('prev');
+    }
+
+    private play(req: express.Request, res: express.Response, next: express.NextFunction) {
+        this._musicChild.stdin.write('play');
+    }
+
+    private pause(req: express.Request, res: express.Response, next: express.NextFunction) {
+        this._musicChild.stdin.write('pause');
     }
 
     private error404Handler(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -127,10 +148,10 @@ export class Server {
     }
 
     private childProcess() {
-        const musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
+        this._musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
 
 
-        musicChild.stdout.on('data', (data) => {
+        this._musicChild.stdout.on('data', (data) => {
             // console.log(`stdout: ${data}`);
             const dataString = data.toString();
             if (dataString.startsWith('Playback Status: ')) {
@@ -147,14 +168,14 @@ export class Server {
             }
         });
 
-        musicChild.stderr.on('data', (data) => {
+        this._musicChild.stderr.on('data', (data) => {
             console.log(data.toString());
             if (data.toString().includes('Media Player not found.')) {
                 this.childProcess();
             }
         });
 
-        musicChild.on('close', (code) => {
+        this._musicChild.on('close', (code) => {
             console.log(`child process exited with code ${code}`);
         });
 

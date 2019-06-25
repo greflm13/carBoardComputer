@@ -22,6 +22,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  prev() { }
+  play() { }
+  pause() { }
+  pnext() { }
 }
 
 interface MusicInfo {
