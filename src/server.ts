@@ -105,6 +105,8 @@ export class Server {
         if (this._isStream) {
             this._musicChild.stdin.write('next\n');
             this._musicChild.stdin.end();
+            this._musicChild.kill();
+            this.childProcess();
         }
     }
 
@@ -112,6 +114,8 @@ export class Server {
         if (this._isStream) {
             this._musicChild.stdin.write('prev\n');
             this._musicChild.stdin.end();
+            this._musicChild.kill();
+            this.childProcess();
         }
     }
 
@@ -119,6 +123,8 @@ export class Server {
         if (this._isStream) {
             this._musicChild.stdin.write('play\n');
             this._musicChild.stdin.end();
+            this._musicChild.kill();
+            this.childProcess();
         }
     }
 
@@ -126,6 +132,8 @@ export class Server {
         if (this._isStream) {
             this._musicChild.stdin.write('pause\n');
             this._musicChild.stdin.end();
+            this._musicChild.kill();
+            this.childProcess();
         }
     }
 
