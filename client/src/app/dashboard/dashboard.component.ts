@@ -22,10 +22,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  prev() { }
-  play() { }
-  pause() { }
-  pnext() { }
+  prev() { this.http.post('api/prev', null); }
+  play() { this.http.post('api/play', null); }
+  pause() { this.http.post('api/pause', null); }
+  pnext() { this.http.post('api/next', null); }
 }
 
 interface MusicInfo {

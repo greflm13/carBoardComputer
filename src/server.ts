@@ -66,7 +66,7 @@ export class Server {
     private _express = express();
     private _musicInfo = { title: '', artist: '', album: '', playing: false };
     private _musicChild: child.ChildProcess;
-    // private _playStatus = '';
+    private _isStream: boolean;
 
     private constructor() {
         this._express.use(bodyparser.json({ limit: '1mb' }));
@@ -102,19 +102,27 @@ export class Server {
     }
 
     private next(req: express.Request, res: express.Response, next: express.NextFunction) {
-        this._musicChild.stdin.write('next');
+        if (this._isStream) {
+            this._musicChild.stdin.write('next');
+        }
     }
 
     private prev(req: express.Request, res: express.Response, next: express.NextFunction) {
-        this._musicChild.stdin.write('prev');
+        if (this._isStream) {
+            this._musicChild.stdin.write('prev');
+        }
     }
 
     private play(req: express.Request, res: express.Response, next: express.NextFunction) {
-        this._musicChild.stdin.write('play');
+        if (this._isStream) {
+            this._musicChild.stdin.write('play');
+        }
     }
 
     private pause(req: express.Request, res: express.Response, next: express.NextFunction) {
-        this._musicChild.stdin.write('pause');
+        if (this._isStream) {
+            this._musicChild.stdin.write('pause');
+        }
     }
 
     private error404Handler(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -149,6 +157,7 @@ export class Server {
 
     private childProcess() {
         this._musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
+        this._isStream = true;
 
 
         this._musicChild.stdout.on('data', (data) => {
@@ -177,6 +186,7 @@ export class Server {
 
         this._musicChild.on('close', (code) => {
             console.log(`child process exited with code ${code}`);
+            this._isStream = false;
         });
 
     }
