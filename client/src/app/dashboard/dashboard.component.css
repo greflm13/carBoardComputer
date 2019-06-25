@@ -1,0 +1,35 @@
+.iconcontainer {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.icon {
+  width: 50px;
+  margin: 50px;
+}
+
+.artist {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 26pt;
+}
+
+.title {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 36pt;
+}
+
+.album {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 20pt;
+}

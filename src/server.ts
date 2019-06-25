@@ -77,15 +77,16 @@ export class Server {
         this._express.use((req, res, next) => this.logger(req, res, next, 'Main'));
 
         // Modules
-        this._express.use(function (req, res, next) {
+        this._express.use((req, res, next) => {
             res.set('X-Clacks-Overhead', 'GNU Terry Pratchett');
             next();
         });
         // Main
-        this._express.use('/de', express.static(path.join(__dirname, './public/')));
+        this._express.use(express.static(path.join(__dirname, '../client/dist/client')));
         this._express.get('*.php', (req, res, next) => {
             res.sendFile(path.join(__dirname, '/views/no.html'));
         });
+        this._express.get('/api/info', (req, res, next) => this.getMusicInfo(req, res, next))
         this._express.use(express.static(path.join(__dirname, './public')));
         this._express.use(this.error404Handler);
         this._express.use(this.errorHandler);

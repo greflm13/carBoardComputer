@@ -1,0 +1,11 @@
+<div class="textcontainer">
+    <span class="artist">{{musicStatus.artist}}</span>
+    <span class="title">{{musicStatus.title}}</span>
+    <span class="album">{{musicStatus.album}}</span>
+</div>
+<div class="iconcontainer">
+    <img class="icon" src="assets/prev.svg">
+    <img class="icon" *ngIf="!musicStatus.playing" src="assets/play.svg">
+    <img class="icon" *ngIf="musicStatus.playing" src="assets/pause.svg">
+    <img class="icon" src="assets/next.svg">
+</div>
