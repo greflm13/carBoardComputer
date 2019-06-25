@@ -104,24 +104,28 @@ export class Server {
     private next(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (this._isStream) {
             this._musicChild.stdin.write('next');
+            log.info('next');
         }
     }
 
     private prev(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (this._isStream) {
             this._musicChild.stdin.write('prev');
+            log.info('prev');
         }
     }
 
     private play(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (this._isStream) {
             this._musicChild.stdin.write('play');
+            log.info('play');
         }
     }
 
     private pause(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (this._isStream) {
             this._musicChild.stdin.write('pause');
+            log.info('pause');
         }
     }
 
