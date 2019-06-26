@@ -24,7 +24,12 @@ export class Bluetooth {
                 log.warn(err);
             }
             // console.log(interfake);
-            console.log(interfake.GetManagedObjects());
+            interfake.getProperty('GetManagedObjects', (err, name) => {
+                if (err) {
+                    log.warn(err);
+                }
+                console.log(name);
+            })
         });
     }
 }
