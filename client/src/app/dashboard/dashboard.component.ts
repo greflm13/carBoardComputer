@@ -8,17 +8,20 @@ import { HttpService } from '../http.service';
 })
 export class DashboardComponent implements OnInit {
   public musicStatus: Properties
+  public playing = false;
 
   constructor(private http: HttpService) { }
 
   ngOnInit() {
     setInterval(() => {
-      this.http.get('api/info').then((res) => {
+      this.http.get('api/info').then((res: Properties) => {
         this.musicStatus = res;
+        this.playing = res.Status === 'playing' ? true : false;
       });
     }, 500);
     this.http.get('api/info').then((res) => {
       this.musicStatus = res;
+      this.playing = res.Status === 'playing' ? true : false;
     });
   }
 
