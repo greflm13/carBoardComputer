@@ -11,10 +11,12 @@
 }
 
 .textcontainer {
+  width: 100%;
   text-align: center;
 }
 
 .artist {
+  width: 80%;
   position: absolute;
   top: 20%;
   left: 50%;
@@ -23,6 +25,7 @@
 }
 
 .title {
+  width: 80%;
   position: absolute;
   top: 30%;
   left: 50%;
@@ -31,6 +34,7 @@
 }
 
 .album {
+  width: 80%;
   position: absolute;
   top: 60%;
   left: 50%;
