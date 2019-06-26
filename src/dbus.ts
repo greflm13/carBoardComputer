@@ -16,29 +16,13 @@ export class Bluetooth {
     }
 
     public properties: Properties;
+    public iface: DBus.DBusInterface = null;
+    public qdbus: string = null;
 
     private dbus = DBus.getBus('system');
-    private qdbus: string = null;
-    private iface: DBus.DBusInterface = null;
 
     constructor() {
         this.main();
-    }
-
-    private statusLoop() {
-        const inter = setInterval(() => {
-            if (this.qdbus !== null) {
-                this.iface.getProperties((err, properties) => {
-                    if (err) {
-                        log.warn(err);
-                        clearInterval(inter);
-                        this.main();
-                    } else {
-                        this.properties = <Properties><unknown>properties;
-                    }
-                });
-            }
-        }, 1000);
     }
 
     private main() {
@@ -53,11 +37,14 @@ export class Bluetooth {
 
                     }
                 });
-                this.statusLoop();
             } else {
                 setTimeout(() => { this.main(); }, 5000);
             }
         });
+    }
+
+    public retry() {
+        this.main();
     }
 
     public async start(): Promise<Bluetooth> {
@@ -68,7 +55,7 @@ export class Bluetooth {
     }
 }
 
-interface Track {
+export interface Track {
     Title: string;
     Duration: number;
     Item: string;
@@ -78,7 +65,7 @@ interface Track {
     TrackNumber: number;
 }
 
-interface Properties {
+export interface Properties {
     Name: string;
     Type: string;
     Subtype: string;

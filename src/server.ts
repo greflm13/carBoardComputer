@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import * as requestLanguage from 'express-request-language';
 import * as debugsx from 'debug-sx';
 
-import { Bluetooth } from './dbus';
+import { Bluetooth, Properties } from './dbus';
 
 const date = new Date();
 export const log: debugsx.IFullLogger = debugsx.createFullLogger('Homepage');
@@ -65,6 +65,7 @@ export class Server {
     // #endregion
 
     private _express = express();
+    private properties: Properties;
 
     private constructor() {
         this._express.use(bodyparser.json({ limit: '1mb' }));
@@ -96,19 +97,33 @@ export class Server {
     }
 
     private getMusicInfo(req: express.Request, res: express.Response, next: express.NextFunction) {
-        res.send(Bluetooth.Instance.properties);
+        if (Bluetooth.Instance.qdbus !== null) {
+            Bluetooth.Instance.iface.getProperties((err, properties) => {
+                if (err) {
+                    log.warn(err);
+                    Bluetooth.Instance.retry();
+                } else {
+                    this.properties = <Properties><unknown>properties;
+                    console.log(this.properties);
+                }
+            });
+        }
     }
 
     private next(req: express.Request, res: express.Response, next: express.NextFunction) {
+        Bluetooth.Instance.iface.Next();
     }
 
     private prev(req: express.Request, res: express.Response, next: express.NextFunction) {
+        Bluetooth.Instance.iface.Previous();
     }
 
     private play(req: express.Request, res: express.Response, next: express.NextFunction) {
+        Bluetooth.Instance.iface.Play();
     }
 
     private pause(req: express.Request, res: express.Response, next: express.NextFunction) {
+        Bluetooth.Instance.iface.Pause();
     }
 
     private error404Handler(req: express.Request, res: express.Response, next: express.NextFunction) {
