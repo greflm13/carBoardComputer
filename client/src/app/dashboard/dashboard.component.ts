@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
         this.musicStatus = res;
         this.playing = res.Status === 'playing' ? true : false;
       });
-    }, 500);
+    }, 1000);
     this.http.get('api/info').then((res) => {
       this.musicStatus = res;
       this.playing = res.Status === 'playing' ? true : false;

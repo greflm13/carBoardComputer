@@ -19,35 +19,40 @@ export class Bluetooth {
 
     private dbus = DBus.getBus('system');
     private qdbus: string = null;
+    private iface: DBus.DBusInterface = null;
 
     constructor() {
         this.main();
     }
 
     private statusLoop() {
-        setInterval(() => {
+        const inter = setInterval(() => {
             if (this.qdbus !== null) {
-                this.dbus.getInterface('org.bluez', this.qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
+                this.iface.getProperties((err, properties) => {
                     if (err) {
                         log.warn(err);
+                        clearInterval(inter);
+                        this.main();
                     } else {
-                        iface.getProperties((err, properties) => {
-                            if (err) {
-                                log.warn(err);
-                            } else {
-                                this.properties = <Properties><unknown>properties;
-                            }
-                        });
+                        this.properties = <Properties><unknown>properties;
                     }
                 });
             }
-        }, 500);
+        }, 1000);
     }
 
     private main() {
         child.execSync('qdbus --system org.bluez').toString().split('\n').forEach((value) => {
             if (value.endsWith('player0')) {
                 this.qdbus = value;
+                this.dbus.getInterface('org.bluez', this.qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
+                    if (err) {
+                        log.warn(err);
+                    } else {
+                        this.iface = iface;
+
+                    }
+                });
                 this.statusLoop();
             } else {
                 setTimeout(() => { this.main(); }, 5000);
