@@ -206,7 +206,7 @@ export class Server {
     }
 
     public start(port: number): Promise<Server> {
-        this.childProcess();
+        // this.childProcess();
         Bluetooth.Instance.main();
 
         return new Promise<Server>((resolve, reject) => {
