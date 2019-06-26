@@ -41,7 +41,7 @@ export class Bluetooth {
                     }
                 });
             }
-        }, 200);
+        }, 500);
     }
 
     private main() {

@@ -6,7 +6,7 @@
 </div>
 <div class="iconcontainer">
     <img (click)="prev()" class="icon" src="assets/prev.svg">
-    <img (click)="play()" class="icon" *ngIf="!musicStatus.Status==='playing'" src="assets/play.svg">
-    <img (click)="pause()" class="icon" *ngIf="musicStatus.Status==='playing'" src="assets/pause.svg">
+    <img (click)="play()" class="icon" *ngIf="!(musicStatus.Status==='playing')" src="assets/play.svg">
+    <img (click)="pause()" class="icon" *ngIf="(musicStatus.Status==='playing')" src="assets/pause.svg">
     <img (click)="pnext()" class="icon" src="assets/next.svg">
 </div>
