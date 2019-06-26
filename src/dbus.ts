@@ -25,8 +25,8 @@ export class Bluetooth {
         this.main();
     }
 
-    private main() {
-        child.execSync('qdbus --system org.bluez').toString().split('\n').forEach((value) => {
+    private async main() {
+        await child.execSync('qdbus --system org.bluez').toString().split('\n').forEach((value) => {
             if (value.endsWith('player0')) {
                 this.qdbus = value;
                 this.dbus.getInterface('org.bluez', this.qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
@@ -37,13 +37,16 @@ export class Bluetooth {
                         log.info('Started Bluetooth service.');
                     }
                 });
-            } else {
-                setTimeout(() => {
-                    log.info('No Media Player found. retrying...');
-                    this.main();
-                }, 5000);
             }
         });
+        if (this.qdbus === null) {
+            log.info('No Media Player found. retrying...');
+            setTimeout(() => {
+                this.retry();
+            }, 1000)
+
+        }
+
     }
 
     public retry() {
