@@ -25,14 +25,14 @@ export class Bluetooth {
             } else {
                 log.fine('success');
             }
-            // console.log(interfake);
-            interfake.getProperty('org.bluez.MediaPlayer1', (err, name) => {
-                if (err) {
-                    log.warn(err);
-                    this.main();
-                }
-                console.log(name);
-            })
+            console.log(interfake);
+            // interfake.getProperty('org.bluez.MediaPlayer1', (err, name) => {
+            //     if (err) {
+            //         log.warn(err);
+            //         this.main();
+            //     }
+            //     console.log(name);
+            // })
         });
     }
 }
