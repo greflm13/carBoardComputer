@@ -39,9 +39,9 @@ export class Bluetooth {
                         if (err) {
                             log.warn(err);
                         } else {
-                            console.log(properties.toString());
-                            // this.properties = JSON.parse(properties.toString());
-                            // console.log(this.properties);
+                            console.log(properties);
+                            this.properties = properties;
+                            console.log(this.properties);
                         }
                     });
                 }
