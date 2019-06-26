@@ -15,7 +15,7 @@ export class Bluetooth {
         return Bluetooth._instance;
     }
 
-    public properties: Object;
+    public properties: Properties;
 
     private dbus = DBus.getBus('system');
 
@@ -40,8 +40,8 @@ export class Bluetooth {
                             log.warn(err);
                         } else {
                             console.log(properties);
-                            this.properties = properties;
-                            console.log(this.properties);
+                            this.properties = <Properties><unknown>properties;
+                            console.log(this.properties.Track.Title);
                         }
                     });
                 }
@@ -60,3 +60,25 @@ export class Bluetooth {
     }
 }
 
+interface Track {
+    Title: string;
+    Duration: number;
+    Item: string;
+    Album: string;
+    Artist: string;
+    NumberOfTracks: number;
+    TrackNumber: number;
+}
+
+interface Properties {
+    Name: string;
+    Type: string;
+    Subtype: string;
+    Position: number;
+    Status: string;
+    Track: Track;
+    Device: string;
+    Browsable: boolean;
+    Searchable: boolean;
+    Playlist: string;
+}
