@@ -49,6 +49,7 @@
   margin-left: 15px;
   margin-right: 15px;
   display: inline-block;
+  width: 40px;
 }
 
 input[type=range] {
