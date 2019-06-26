@@ -22,11 +22,14 @@ export class Bluetooth {
         this.dbus.getInterface('org.bluez', '/', 'org.freedesktop.DBus.ObjectManager', (err, interfake) => {
             if (err) {
                 log.warn(err);
+            } else {
+                log.fine('success');
             }
             // console.log(interfake);
             interfake.getProperty('org.bluez.MediaPlayer1', (err, name) => {
                 if (err) {
                     log.warn(err);
+                    this.main();
                 }
                 console.log(name);
             })
