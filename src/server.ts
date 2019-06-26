@@ -207,12 +207,12 @@ export class Server {
 
     public start(port: number): Promise<Server> {
         // this.childProcess();
-        Bluetooth.Instance.main();
 
         return new Promise<Server>((resolve, reject) => {
             log.info('Starting Server...');
             const server = http.createServer(this._express).listen(port, () => {
                 log.info('Server running on port ' + port + '.');
+                Bluetooth.Instance.start();
                 server.on('close', () => {
                     log.fine('Server stopped.');
                 });

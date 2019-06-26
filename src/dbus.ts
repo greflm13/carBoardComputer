@@ -19,14 +19,17 @@ export class Bluetooth {
 
     private dbus = DBus.getBus('system');
 
-    public main() {
+    constructor() {
+        this.main();
+    }
+
+    private main() {
         let qdbus = null;
         child.execSync('qdbus --system org.bluez').toString().split('\n').forEach((value) => {
             if (value.endsWith('player0')) {
                 qdbus = value;
             };
         });
-        console.log(qdbus);
         if (qdbus !== null) {
             this.dbus.getInterface('org.bluez', qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
                 if (err) {
@@ -37,6 +40,7 @@ export class Bluetooth {
                             log.warn(err);
                         } else {
                             this.properties = JSON.parse(properties.toString());
+                            console.log(properties.toString());
                             console.log(this.properties);
                         }
                     });
@@ -44,8 +48,15 @@ export class Bluetooth {
             });
         }
         else {
-            this.main();
+            setTimeout(() => { this.main(); }, 1000);
         }
+    }
+
+    public async start(): Promise<Bluetooth> {
+        log.info('starting Bluetooth service...');
+        return new Promise<Bluetooth>((resolve, reject) => {
+            log.info('started Bluetooth service.');
+        })
     }
 }
 
