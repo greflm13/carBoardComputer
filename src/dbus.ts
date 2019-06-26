@@ -46,11 +46,25 @@ export class Bluetooth {
             }, 1000)
 
         }
-
     }
 
-    public retry() {
+    private retry() {
         this.main();
+    }
+
+    public async ifaceMethd(): Promise<Properties> {
+        if (this.qdbus !== null) {
+            await this.iface.getProperties((err, properties) => {
+                if (err) {
+                    log.warn(err);
+                    this.retry();
+                } else {
+                    this.properties = <Properties><unknown>properties;
+                    console.log(this.properties);
+                }
+            });
+            return this.properties;
+        }
     }
 
     public async start(): Promise<Bluetooth> {

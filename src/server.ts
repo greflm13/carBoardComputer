@@ -97,17 +97,7 @@ export class Server {
     }
 
     private getMusicInfo(req: express.Request, res: express.Response, next: express.NextFunction) {
-        if (Bluetooth.Instance.qdbus !== null) {
-            Bluetooth.Instance.iface.getProperties((err, properties) => {
-                if (err) {
-                    log.warn(err);
-                    Bluetooth.Instance.retry();
-                } else {
-                    this.properties = <Properties><unknown>properties;
-                    console.log(this.properties);
-                }
-            });
-        }
+        Bluetooth.Instance.ifaceMethd().then(pro => { res.send(pro) });
     }
 
     private next(req: express.Request, res: express.Response, next: express.NextFunction) {
