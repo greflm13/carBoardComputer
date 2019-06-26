@@ -1,6 +1,8 @@
 dependencies:
+  bluez: 0.3.0
   body-parser: 1.19.0
   bootstrap: 4.3.1
+  dbus: 1.0.5
   debug: 2.6.9
   debug-sx: 0.1.7
   express: 4.17.1
@@ -12,6 +14,7 @@ dependencies:
   spin: 0.0.1
 devDependencies:
   '@types/body-parser': 1.17.0
+  '@types/dbus': 1.0.0
   '@types/debug': 0.0.29
   '@types/express': 4.17.0
   '@types/node': 8.10.49
@@ -72,6 +75,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-4r8qa0quOvh7lGD0pre62CAb1oni1OO6ecJLGCezTmhQ8Fz50Arx9RUszryR8KlgK6avuSXvviL6yWyViQABOg==
+  /@types/dbus/1.0.0:
+    dev: true
+    resolution:
+      integrity: sha512-Xv91WkykQZDcU04SZSQNPOGPKShnamVw0qhBVOuCQNiSCWRa4piu2wvkNlxX9G3F6Lx6gHWV0IgSNTH6S7nU8w==
   /@types/debug/0.0.29:
     dev: true
     resolution:
@@ -430,6 +437,15 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-Un7MIEDdUC5gNpcGDV97op1Ywk748MpHcFTHoYs6qnj1Z3j7I53VG3nwZhKzoBZmbdRNnb6WRdFlwl7tSDuZGw==
+  /bluez/0.3.0:
+    dependencies:
+      dbus: 1.0.5
+      errno: 0.1.7
+      nan: 2.14.0
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-6CG15k7Uq08u8NxPsb6hlF2ohEvC5mMC9WLUPuhn1oJzVua0Ww4HByns4TumAzEJFAjezOdfPHTnaTwI3xoSKg==
   /body-parser/1.19.0:
     dependencies:
       bytes: 3.1.0
@@ -866,6 +882,15 @@ packages:
   /dateformat/2.2.0:
     resolution:
       integrity: sha1-QGXiATz5+5Ft39gu+1Bq1MZ2kGI=
+  /dbus/1.0.5:
+    dependencies:
+      nan: 2.14.0
+    dev: false
+    engines:
+      node: '>= 0.12.0'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-itMup/0lcjnwV4DULJtI8q37Nky713KE2b1QM4+W/0zlzAsMNJZURBtyENtnJc6BlHouqbur++PXWeEKDuGulg==
   /debug-fabulous/1.1.0:
     dependencies:
       debug: 3.2.6
@@ -1053,6 +1078,13 @@ packages:
     dev: true
     resolution:
       integrity: sha512-1MkrZNvWTKCaigbn+W15elq2BB/L22nqrSY5DKlo3X6+vclJm8Bb5djXJBmEX6fS3+zCh/F4VBK5Z2KxJt4s2Q==
+  /errno/0.1.7:
+    dependencies:
+      prr: 1.0.1
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-MfrRBDWzIWifgq6tJj60gkAwtLNb6sQPlcFrSOflcP1aFmmruKQ2wRnze/8V6kgyz7H3FF8Npzv78mZ7XLLflg==
   /es5-ext/0.10.50:
     dependencies:
       es6-iterator: 2.0.3
@@ -2689,7 +2721,6 @@ packages:
     resolution:
       integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
   /nan/2.14.0:
-    optional: true
     resolution:
       integrity: sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
   /nanomatch/1.2.13:
@@ -3150,6 +3181,10 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-t/7RxHXPH6cJtP0pRG6smSr9QJidhB+3kXu0KgXnbGYMgzEnUxRQ4/LDdfOwZEMyIh3/xHb8PX3t+lfL9z+YVQ==
+  /prr/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-0/wRS6BplaRexok/SEzrHXj19HY=
   /ps-tree/0.0.3:
     dependencies:
       event-stream: 0.5.3
@@ -4308,12 +4343,15 @@ packages:
       integrity: sha1-9+572FfdfB0tOMDnTvvWgdFDH9E=
 specifiers:
   '@types/body-parser': ^1.17.0
+  '@types/dbus': ^1.0.0
   '@types/debug': 0.0.29
   '@types/express': ^4.0.38
   '@types/node': ^8.0.47
   '@types/pug': ^2.0.4
+  bluez: ^0.3.0
   body-parser: ^1.18.3
   bootstrap: ^4.0.0-beta.2
+  dbus: ^1.0.5
   debug: ^2.6.9
   debug-sx: ^0.1.7
   del: ^3.0.0

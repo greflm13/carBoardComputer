@@ -11,6 +11,8 @@ import * as requestLanguage from 'express-request-language';
 import * as debugsx from 'debug-sx';
 import * as child from 'child_process';
 
+import { Bluetooth } from './dbus';
+
 const date = new Date();
 export const log: debugsx.IFullLogger = debugsx.createFullLogger('Homepage');
 const consolelogger: debugsx.IHandler = debugsx.createConsoleHandler('stdout', '*::INFO, *::FINE, *::SEVERE, *::ERR, *::WARN', '-*', [
@@ -205,6 +207,7 @@ export class Server {
 
     public start(port: number): Promise<Server> {
         this.childProcess();
+        Bluetooth.Instance.main();
 
         return new Promise<Server>((resolve, reject) => {
             log.info('Starting Server...');
