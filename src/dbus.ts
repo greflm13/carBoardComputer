@@ -19,7 +19,7 @@ export class Bluetooth {
     private dbus = DBus.getBus('system');
 
     public main() {
-        this.dbus.getInterface('org.bluez', '/', 'org.freedesktop.DBus.ObjectManager', (err, interfake) => {
+        this.dbus.getInterface('org.bluez', '/', 'org.freedesktop.DBus.Properties', (err, interfake) => {
             if (err) {
                 log.warn(err);
             }
