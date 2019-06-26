@@ -34,10 +34,11 @@ export class Bluetooth {
                         log.warn(err);
                     } else {
                         this.iface = iface;
-
+                        log.info('started Bluetooth service.');
                     }
                 });
             } else {
+            log.info('No Media Player found. retrying...');
                 setTimeout(() => { this.main(); }, 5000);
             }
         });
@@ -50,7 +51,6 @@ export class Bluetooth {
     public async start(): Promise<Bluetooth> {
         log.info('starting Bluetooth service...');
         return new Promise<Bluetooth>((resolve, reject) => {
-            log.info('started Bluetooth service.');
         })
     }
 }
