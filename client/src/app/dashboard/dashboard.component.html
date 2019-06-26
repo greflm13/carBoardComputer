@@ -1,11 +1,12 @@
 <div class="textcontainer">
-    <span class="artist">{{musicStatus.artist}}</span>
-    <span class="title">{{musicStatus.title}}</span>
-    <span class="album">{{musicStatus.album}}</span>
+    <span class="artist">{{musicStatus.Track.Artist}}</span>
+    <span class="title">{{musicStatus.Track.Title}}</span>
+    <span class="album">{{musicStatus.Track.Album}}</span>
+    <input type="range" [max]="musicStatus.Track.Duration" [value]="musicStatus.Position">
 </div>
 <div class="iconcontainer">
     <img (click)="prev()" class="icon" src="assets/prev.svg">
-    <img (click)="play()" class="icon" *ngIf="!musicStatus.playing" src="assets/play.svg">
-    <img (click)="pause()" class="icon" *ngIf="musicStatus.playing" src="assets/pause.svg">
+    <img (click)="play()" class="icon" *ngIf="!musicStatus.Status==='playing'" src="assets/play.svg">
+    <img (click)="pause()" class="icon" *ngIf="musicStatus.Status==='playing'" src="assets/pause.svg">
     <img (click)="pnext()" class="icon" src="assets/next.svg">
 </div>

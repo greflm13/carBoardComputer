@@ -7,7 +7,7 @@ import { HttpService } from '../http.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  public musicStatus: MusicInfo = { title: '', artist: '', album: '', playing: false };
+  public musicStatus: Properties
 
   constructor(private http: HttpService) { }
 
@@ -28,9 +28,25 @@ export class DashboardComponent implements OnInit {
   pnext() { this.http.post('api/next', null); }
 }
 
-interface MusicInfo {
-  title: string;
-  artist: string;
-  album: string;
-  playing: boolean;
+interface Track {
+  Title: string;
+  Duration: number;
+  Item: string;
+  Album: string;
+  Artist: string;
+  NumberOfTracks: number;
+  TrackNumber: number;
+}
+
+interface Properties {
+  Name: string;
+  Type: string;
+  Subtype: string;
+  Position: number;
+  Status: string;
+  Track: Track;
+  Device: string;
+  Browsable: boolean;
+  Searchable: boolean;
+  Playlist: string;
 }

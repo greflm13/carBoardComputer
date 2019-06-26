@@ -36,7 +36,6 @@ export class Bluetooth {
                                 log.warn(err);
                             } else {
                                 this.properties = <Properties><unknown>properties;
-                                console.log(this.properties.Position + '-' + this.properties.Track.Duration + '\r');
                             }
                         });
                     }

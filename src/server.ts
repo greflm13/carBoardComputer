@@ -9,7 +9,6 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as requestLanguage from 'express-request-language';
 import * as debugsx from 'debug-sx';
-import * as child from 'child_process';
 
 import { Bluetooth } from './dbus';
 
@@ -66,9 +65,6 @@ export class Server {
     // #endregion
 
     private _express = express();
-    private _musicInfo = { title: '', artist: '', album: '', playing: false };
-    private _musicChild: child.ChildProcess;
-    private _isStream: boolean;
 
     private constructor() {
         this._express.use(bodyparser.json({ limit: '1mb' }));
@@ -100,43 +96,19 @@ export class Server {
     }
 
     private getMusicInfo(req: express.Request, res: express.Response, next: express.NextFunction) {
-        res.send(this._musicInfo)
+        res.send(Bluetooth.Instance.properties);
     }
 
     private next(req: express.Request, res: express.Response, next: express.NextFunction) {
-        if (this._isStream) {
-            this._musicChild.stdin.write('next\n');
-            this._musicChild.stdin.end();
-            this._musicChild.kill();
-            this.childProcess();
-        }
     }
 
     private prev(req: express.Request, res: express.Response, next: express.NextFunction) {
-        if (this._isStream) {
-            this._musicChild.stdin.write('prev\n');
-            this._musicChild.stdin.end();
-            this._musicChild.kill();
-            this.childProcess();
-        }
     }
 
     private play(req: express.Request, res: express.Response, next: express.NextFunction) {
-        if (this._isStream) {
-            this._musicChild.stdin.write('play\n');
-            this._musicChild.stdin.end();
-            this._musicChild.kill();
-            this.childProcess();
-        }
     }
 
     private pause(req: express.Request, res: express.Response, next: express.NextFunction) {
-        if (this._isStream) {
-            this._musicChild.stdin.write('pause\n');
-            this._musicChild.stdin.end();
-            this._musicChild.kill();
-            this.childProcess();
-        }
     }
 
     private error404Handler(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -169,44 +141,7 @@ export class Server {
         next();
     }
 
-    private childProcess() {
-        this._musicChild = child.spawn('python', ['-u', path.join(__dirname, '../media_control.py')]);
-        this._isStream = true;
-
-
-        this._musicChild.stdout.on('data', (data) => {
-            // console.log(`stdout: ${data}`);
-            const dataString = data.toString();
-            if (dataString.startsWith('Playback Status: ')) {
-                this._musicInfo.playing = dataString.substring(17) === 'playing\n' ? true : false;
-            }
-            if (dataString.includes('Title: ')) {
-                this._musicInfo.title = dataString.slice(dataString.indexOf('Title: ') + 7, dataString.indexOf('\n', dataString.indexOf('Title: ') + 7));
-            }
-            if (dataString.includes('Artist: ')) {
-                this._musicInfo.artist = dataString.slice(dataString.indexOf('Artist: ') + 8, dataString.indexOf('\n', dataString.indexOf('Artist: ') + 8));
-            }
-            if (dataString.includes('Album: ')) {
-                this._musicInfo.album = dataString.slice(dataString.indexOf('Album: ') + 6, dataString.indexOf('\n', dataString.indexOf('Album: ') + 6));
-            }
-        });
-
-        this._musicChild.stderr.on('data', (data) => {
-            console.log(data.toString());
-            if (data.toString().includes('Media Player not found.')) {
-                this.childProcess();
-            }
-        });
-
-        this._musicChild.on('close', (code) => {
-            console.log(`child process exited with code ${code}`);
-            this._isStream = false;
-        });
-
-    }
-
     public start(port: number): Promise<Server> {
-        // this.childProcess();
 
         return new Promise<Server>((resolve, reject) => {
             log.info('Starting Server...');
