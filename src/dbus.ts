@@ -20,7 +20,7 @@ export class Bluetooth {
 
     public main() {
         this.dbus.getInterface('org.bluez', '/', 'org.freedesktop.DBus.ObjectManager', (err, iface) => {
-            if (err) { log.warn(err) } else { console.log('Object Manager: ' + iface) };
+            if (err) { log.warn(err) } else { console.log('Object Manager: ' + iface.toString()) };
         });
         this.dbus.getInterface('org.bluez', '/org/bluez/hci0/dev_94_65_2D_7B_90_8E/player0', 'org.bluez.MediaPlayer1', (err, iface) => {
             if (err) {
@@ -32,7 +32,7 @@ export class Bluetooth {
                 if (err) {
                     log.warn(err);
                 } else {
-                    console.log('properties: ' + properties);
+                    console.log('properties: ' + properties.toString());
                 }
             });
         });
