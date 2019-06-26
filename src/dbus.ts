@@ -27,6 +27,7 @@ export class Bluetooth {
 
     private async main() {
         await child.execSync('qdbus --system org.bluez').toString().split('\n').forEach((value) => {
+            console.log(value);
             if (value.endsWith('player0')) {
                 this.qdbus = value;
                 this.dbus.getInterface('org.bluez', this.qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
