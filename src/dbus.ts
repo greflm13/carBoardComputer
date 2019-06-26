@@ -23,7 +23,8 @@ export class Bluetooth {
             if (err) {
                 log.warn(err);
             }
-            console.log(interfake);
+            // console.log(interfake);
+            console.log(interfake.GetManagedObjects());
         });
     }
 }
