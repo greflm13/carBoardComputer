@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/greflm13/carBoardComputer#readme",
   "dependencies": {
-    "bluez": "^0.3.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.0.0-beta.2",
     "dbus": "^1.0.5",
