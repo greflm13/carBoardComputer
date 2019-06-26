@@ -19,7 +19,7 @@ export class Bluetooth {
     private dbus = DBus.getBus('system');
 
     public main() {
-        this.dbus.getInterface('org.bluez', '/', 'org.bluez.MediaPlayer1', (err, interfake) => {
+        this.dbus.getInterface('org.bluez', '/', 'org.freedesktop.DBus.ObjectManager', (err, interfake) => {
             if (err) {
                 log.warn(err);
             }
