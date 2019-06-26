@@ -61,7 +61,6 @@ export class Bluetooth {
                     this.retry();
                 } else {
                     this.properties = <Properties><unknown>properties;
-                    console.log(this.properties);
                 }
             });
             return this.properties;
