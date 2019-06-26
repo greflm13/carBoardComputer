@@ -28,10 +28,30 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  prev() { this.http.post('api/prev', null); }
-  play() { this.http.post('api/play', null); }
-  pause() { this.http.post('api/pause', null); }
-  pnext() { this.http.post('api/next', null); }
+  prev() {
+    this.http.post('api/prev', null).then((res) => {
+      this.musicStatus = res;
+      this.playing = res.Status === 'playing' ? true : false;
+    });;
+  }
+  play() {
+    this.http.post('api/play', null).then((res) => {
+      this.musicStatus = res;
+      this.playing = res.Status === 'playing' ? true : false;
+    });;
+  }
+  pause() {
+    this.http.post('api/pause', null).then((res) => {
+      this.musicStatus = res;
+      this.playing = res.Status === 'playing' ? true : false;
+    });;
+  }
+  pnext() {
+    this.http.post('api/next', null).then((res) => {
+      this.musicStatus = res;
+      this.playing = res.Status === 'playing' ? true : false;
+    });;
+  }
 }
 
 interface Track {

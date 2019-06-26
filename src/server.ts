@@ -104,18 +104,22 @@ export class Server {
 
     private next(req: express.Request, res: express.Response, next: express.NextFunction) {
         Bluetooth.Instance.iface.Next();
+        this.getMusicInfo(req, res, next);
     }
 
     private prev(req: express.Request, res: express.Response, next: express.NextFunction) {
         Bluetooth.Instance.iface.Previous();
+        this.getMusicInfo(req, res, next);
     }
 
     private play(req: express.Request, res: express.Response, next: express.NextFunction) {
         Bluetooth.Instance.iface.Play();
+        this.getMusicInfo(req, res, next);
     }
 
     private pause(req: express.Request, res: express.Response, next: express.NextFunction) {
         Bluetooth.Instance.iface.Pause();
+        this.getMusicInfo(req, res, next);
     }
 
     private error404Handler(req: express.Request, res: express.Response, next: express.NextFunction) {
