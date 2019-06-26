@@ -18,38 +18,42 @@ export class Bluetooth {
     public properties: Properties;
 
     private dbus = DBus.getBus('system');
+    private qdbus: string = null;
 
     constructor() {
         this.main();
     }
 
+    private statusLoop() {
+        setInterval(() => {
+            if (this.qdbus !== null) {
+                this.dbus.getInterface('org.bluez', this.qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
+                    if (err) {
+                        log.warn(err);
+                    } else {
+                        iface.getProperties((err, properties) => {
+                            if (err) {
+                                log.warn(err);
+                            } else {
+                                this.properties = <Properties><unknown>properties;
+                                console.log(this.properties.Position + '-' + this.properties.Track.Duration + '\r');
+                            }
+                        });
+                    }
+                });
+            }
+        }, 200);
+    }
+
     private main() {
-        let qdbus = null;
         child.execSync('qdbus --system org.bluez').toString().split('\n').forEach((value) => {
             if (value.endsWith('player0')) {
-                qdbus = value;
-            };
+                this.qdbus = value;
+                this.statusLoop();
+            } else {
+                setTimeout(() => { this.main(); }, 5000);
+            }
         });
-        if (qdbus !== null) {
-            this.dbus.getInterface('org.bluez', qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
-                if (err) {
-                    log.warn(err);
-                } else {
-                    iface.getProperties((err, properties) => {
-                        if (err) {
-                            log.warn(err);
-                        } else {
-                            console.log(properties);
-                            this.properties = <Properties><unknown>properties;
-                            console.log(this.properties.Track.Title);
-                        }
-                    });
-                }
-            });
-        }
-        else {
-            setTimeout(() => { this.main(); }, 1000);
-        }
     }
 
     public async start(): Promise<Bluetooth> {
