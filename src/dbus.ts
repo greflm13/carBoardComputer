@@ -1,4 +1,5 @@
 import * as DBus from 'dbus';
+import * as child from 'child_process';
 
 import { log } from './server';
 
@@ -19,9 +20,11 @@ export class Bluetooth {
     private dbus = DBus.getBus('system');
 
     public main() {
-        this.dbus.getInterface('org.bluez', '/org/bluez/hci0', 'org.freedesktop.DBus.ObjectManager', (err, iface) => {
-            if (err) { log.warn(err) } else { console.log('hci0: '); console.log(iface); };
-        });
+        const qdbus = child.execSync('qdbus --system org.bluez').toString();
+        console.log(qdbus);
+        // this.dbus.getInterface('org.bluez', '/org/bluez/hci0', 'org.freedesktop.DBus.ObjectManager', (err, iface) => {
+        //     if (err) { log.warn(err) } else { console.log('hci0: '); console.log(iface); };
+        // });
         // this.dbus.getInterface('org.bluez', '/org/bluez/hci0/dev_94_65_2D_7B_90_8E/player0', 'org.bluez.MediaPlayer1', (err, iface) => {
         //     if (err) {
         //         log.warn(err);
