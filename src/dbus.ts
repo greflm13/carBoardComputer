@@ -19,20 +19,22 @@ export class Bluetooth {
     private dbus = DBus.getBus('system');
 
     public main() {
-        this.dbus.getInterface('org.bluez', '/org/bluez/hci0/dev_94_65_2D_7B_90_8E/player0', 'org.bluez.MediaPlayer1', (err, interfake) => {
+        this.dbus.getInterface('org.bluez', '/', 'org.freedesktop.DBus.ObjectManager', (err, iface) => {
+            if (err) { log.warn(err) } else { console.log(iface) };
+        });
+        this.dbus.getInterface('org.bluez', '/org/bluez/hci0/dev_94_65_2D_7B_90_8E/player0', 'org.bluez.MediaPlayer1', (err, iface) => {
             if (err) {
                 log.warn(err);
             } else {
                 log.fine('success');
             }
-            console.log(interfake);
-            // interfake.getProperty('org.bluez.MediaPlayer1', (err, name) => {
-            //     if (err) {
-            //         log.warn(err);
-            //         this.main();
-            //     }
-            //     console.log(name);
-            // })
+            iface.getProperties((err, properties) => {
+                if (err) {
+                    log.warn(err);
+                } else {
+                    console.log(properties);
+                }
+            });
         });
     }
 }
