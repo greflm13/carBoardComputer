@@ -24,7 +24,7 @@ export class Bluetooth {
                 log.warn(err);
             }
             // console.log(interfake);
-            interfake.getProperty('GetManagedObjects', (err, name) => {
+            interfake.getProperty('org.bluez.MediaPlayer1', (err, name) => {
                 if (err) {
                     log.warn(err);
                 }
