@@ -17,7 +17,7 @@ export class Bluetooth {
 
     public properties: Properties = {
         Browsable: false, Device: '', Name: '', Playlist: '', Type: '', Subtype: '', Position: 0, Status: '', Searchable: false,
-        Track: { Album: '', Artist: '', Title: '', Duration: 0, Item: '', TrackNumber: 0, NumberOfTracks: 0 }
+        Track: { Album: '', Artist: '', Title: 'No Bluetooth Device', Duration: 0, Item: '', TrackNumber: 0, NumberOfTracks: 0 }
     };
     public iface: DBus.DBusInterface = null;
     public qdbus: string = null;
@@ -35,6 +35,7 @@ export class Bluetooth {
                 this.dbus.getInterface('org.bluez', this.qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
                     if (err) {
                         log.warn(err);
+                        this.retry();
                     } else {
                         this.iface = iface;
                         log.info('Started Bluetooth service.');
@@ -43,7 +44,6 @@ export class Bluetooth {
             }
         });
         if (this.qdbus === null) {
-            log.info('No Media Player found. retrying...');
             setTimeout(() => {
                 this.retry();
             }, 1000)
@@ -52,6 +52,7 @@ export class Bluetooth {
     }
 
     private retry() {
+        log.info('No Media Player found. retrying...');
         this.main();
     }
 
@@ -60,11 +61,13 @@ export class Bluetooth {
             if (this.qdbus !== null) {
                 this.iface.getProperties((err, properties) => {
                     if (err) {
-                        log.warn(err);
+                        // log.warn(err);
+                        log.info('Restarting Bluetooth service...');
                         this.retry();
+                        this.qdbus = null
                         this.properties = {
                             Browsable: false, Device: '', Name: '', Playlist: '', Type: '', Subtype: '', Position: 0, Status: '', Searchable: false,
-                            Track: { Album: '', Artist: '', Title: '', Duration: 0, Item: '', TrackNumber: 0, NumberOfTracks: 0 }
+                            Track: { Album: '', Artist: '', Title: 'No Bluetooth Device', Duration: 0, Item: '', TrackNumber: 0, NumberOfTracks: 0 }
                         };
                     } else {
                         this.properties = <Properties><unknown>properties;
