@@ -97,7 +97,9 @@ export class Server {
     }
 
     private getMusicInfo(req: express.Request, res: express.Response, next: express.NextFunction) {
-        Bluetooth.Instance.ifaceMethd().then(pro => { res.send(pro) });
+        Bluetooth.Instance.ifaceMethd().then(pro => {
+            res.send(pro)
+        });
     }
 
     private next(req: express.Request, res: express.Response, next: express.NextFunction) {

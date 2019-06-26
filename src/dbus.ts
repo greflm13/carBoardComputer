@@ -15,7 +15,10 @@ export class Bluetooth {
         return Bluetooth._instance;
     }
 
-    public properties: Properties;
+    public properties: Properties = {
+        Browsable: false, Device: '', Name: '', Playlist: '', Type: '', Subtype: '', Position: 0, Status: '', Searchable: false,
+        Track: { Album: '', Artist: '', Title: '', Duration: 0, Item: '', TrackNumber: 0, NumberOfTracks: 0 }
+    };
     public iface: DBus.DBusInterface = null;
     public qdbus: string = null;
 
@@ -27,7 +30,6 @@ export class Bluetooth {
 
     private async main() {
         await child.execSync('qdbus --system org.bluez').toString().split('\n').forEach((value) => {
-            console.log(value);
             if (value.includes('player') && !value.includes('Filesystem') && !value.includes('NowPlaying')) {
                 this.qdbus = value;
                 this.dbus.getInterface('org.bluez', this.qdbus, 'org.bluez.MediaPlayer1', (err, iface) => {
@@ -53,18 +55,25 @@ export class Bluetooth {
         this.main();
     }
 
-    public async ifaceMethd(): Promise<Properties> {
-        if (this.qdbus !== null) {
-            await this.iface.getProperties((err, properties) => {
-                if (err) {
-                    log.warn(err);
-                    this.retry();
-                } else {
-                    this.properties = <Properties><unknown>properties;
-                }
-            });
-            return this.properties;
-        }
+    public ifaceMethd(): Promise<Properties> {
+        return new Promise<Properties>((resolve, reject) => {
+            if (this.qdbus !== null) {
+                this.iface.getProperties((err, properties) => {
+                    if (err) {
+                        log.warn(err);
+                        this.retry();
+                        this.properties = {
+                            Browsable: false, Device: '', Name: '', Playlist: '', Type: '', Subtype: '', Position: 0, Status: '', Searchable: false,
+                            Track: { Album: '', Artist: '', Title: '', Duration: 0, Item: '', TrackNumber: 0, NumberOfTracks: 0 }
+                        };
+                    } else {
+                        this.properties = <Properties><unknown>properties;
+                    }
+                });
+            }
+            resolve(this.properties);
+        })
+
     }
 
     public async start(): Promise<Bluetooth> {

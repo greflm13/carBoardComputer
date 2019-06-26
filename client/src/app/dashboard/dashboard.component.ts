@@ -7,7 +7,10 @@ import { HttpService } from '../http.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  public musicStatus: Properties
+  public musicStatus: Properties = {
+    Browsable: false, Device: '', Name: '', Playlist: '', Type: '', Subtype: '', Position: 0, Status: '', Searchable: false,
+    Track: { Album: '', Artist: '', Title: '', Duration: 0, Item: '', TrackNumber: 0, NumberOfTracks: 0 }
+  };
   public playing = false;
 
   constructor(private http: HttpService) { }

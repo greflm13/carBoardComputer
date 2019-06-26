@@ -2,7 +2,7 @@
     <span class="artist">{{musicStatus.Track.Artist}}</span>
     <span class="title">{{musicStatus.Track.Title}}</span>
     <span class="album">{{musicStatus.Track.Album}}</span>
-    <input type="range" [max]="musicStatus.Track.Duration" [value]="musicStatus.Position">
+    <input class="slider" type="range" [max]="musicStatus.Track.Duration" [value]="musicStatus.Position">
 </div>
 <div class="iconcontainer">
     <img (click)="prev()" class="icon" src="assets/prev.svg">
