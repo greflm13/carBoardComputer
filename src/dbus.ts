@@ -15,7 +15,7 @@ export class Bluetooth {
         return Bluetooth._instance;
     }
 
-    private _properties: { [name: string]: any; }[];
+    public properties: Object;
 
     private dbus = DBus.getBus('system');
 
@@ -32,16 +32,15 @@ export class Bluetooth {
                 if (err) {
                     log.warn(err);
                 } else {
-                    log.fine('success');
+                    iface.getProperties((err, properties) => {
+                        if (err) {
+                            log.warn(err);
+                        } else {
+                            this.properties = JSON.parse(properties.toString());
+                            console.log(this.properties);
+                        }
+                    });
                 }
-                iface.getProperties((err, properties) => {
-                    if (err) {
-                        log.warn(err);
-                    } else {
-                        console.log('properties: ');
-                        console.log(properties);
-                    }
-                });
             });
         }
         else {
